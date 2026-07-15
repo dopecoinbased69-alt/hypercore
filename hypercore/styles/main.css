@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Inter:wght@100..900&display=swap');
+
+html, body {
+    background-color: #05070a;
+    color: #cbd5e1;
+    font-family: 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    overscroll-behavior: none;
+}
+button, a, [role="button"] { touch-action: manipulation; }
+.mono { font-family: 'Geist Mono', monospace; }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.25); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 229, 255, 0.55); }
+
+/* === X-RAY THEME PRIMITIVES === */
+.xray-grid {
+    background-image:
+        linear-gradient(rgba(0, 229, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+.skeletal-border { border: 1px solid rgba(255, 255, 255, 0.08); }
+.glass-xray {
+    background: rgba(15, 20, 28, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.glow-cyan { box-shadow: 0 0 18px rgba(0, 229, 255, 0.3); }
+.glow-cyan-strong { box-shadow: 0 0 36px rgba(0, 229, 255, 0.5); }
+.rounded-custom { border-radius: 12px; }
+.glow-text { text-shadow: 0 0 10px rgba(0, 229, 255, 0.55); }
+
+/* === ANGULAR CUTS === */
+.angular-cut { clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px); }
+.angular-cut-sm { clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+
+/* === ANIMATIONS === */
+@keyframes pulse-cyan { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+.animate-xray { animation: pulse-cyan 3s infinite ease-in-out; }
+
+@keyframes cyber-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.02); } }
+.pulse-glow { animation: cyber-pulse 2s infinite ease-in-out; }
+@keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+.scan-line {
+
+    position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.5), transparent);
+    animation: scan 4s linear infinite; z-index: 50; pointer-events: none;
+}
+
+.scanlines { position: relative; overflow: hidden; }
+.scanlines::before {
+    content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.12) 50%),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.025), rgba(0, 229, 255, 0.012), rgba(0, 229, 255, 0.025));
+    z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none;
+}
+
+.agent-sidebar { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+
+@keyframes chip-shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+.chip-shimmer {
+    background: linear-gradient(90deg, rgba(0,229,255,0) 0%, rgba(0,229,255,0.18) 50%, rgba(0,229,255,0) 100%);
+    background-size: 200% 100%; animation: chip-shimmer 2s linear infinite;
+}
+
+@keyframes toast-in { from { transform: translateX(120%) skewX(-8deg); opacity: 0; } to { transform: translateX(0) skewX(0); opacity: 1; } }
+.animate-toast-in { animation: toast-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+@keyframes fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fade-in 0.3s ease-out forwards; }
+
+.scan-effect { position: relative; overflow: hidden; }
+.scan-effect::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent, rgba(0, 229, 255, 0.05), transparent);
+    animation: scan-toast 4s linear infinite; pointer-events: none;
+}
+@keyframes scan-toast { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+
+.pokedex-stat-bar { height: 2px; background: rgba(0, 229, 255, 0.06); overflow: hidden; }
+.pokedex-stat-fill { height: 100%; transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
+
+.tool-card {
+    background: linear-gradient(145deg, rgba(10,15,22,0.9), rgba(5,7,10,0.95));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tool-card:hover, .tool-card:active {
+    transform: translateY(-4px); border-color: rgba(0, 229, 255, 0.5); box-shadow: 0 0 24px rgba(0, 229, 255, 0.18);
+}
+
+.safe-top { padding-top: env(safe-area-inset-top); }
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+.safe-x { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+.tap-target { min-height: 44px; min-width: 44px; }
+
+.modal-backdrop {
+    background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#05070a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>HYPERCORE PRO v6.9 · X-RAY EDITION | MULTI-AGENT ENGINE</title>
+
+    <!-- =============== 1. THEME (tailwind config MUST precede tailwind CDN) =============== -->
+    <script src="scripts/config/tailwind.config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Apply the exported config object to the tailwind runtime.
+        if (window.tailwind && window.tailwindConfig) tailwind.config = window.tailwindConfig;
+    </script>
+
+    <!-- =============== 2. RUNTIME (React 18 + in-browser Babel for JSX) =============== -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- =============== 3. STYLESHEETS =============== -->
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body class="text-slate-300 h-screen w-screen overflow-hidden selection:bg-cyan-500/30 xray-grid">
+    <div id="root" class="h-full w-full relative"></div>
+
+    <!--
+        =============== 4. APPLICATION MODULES ===============
+        Order matters. Each file is a Babel-transpiled JSX module and must
+        declare its symbols BEFORE any downstream module references them.
+
+        Dependency graph:
+            core/*       → no dependencies
+            data/*       → no dependencies
+            services/*   → depends on core (aiCache)
+            components/  → depend on core + services + data
+            App.jsx      → depends on everything
+            bootstrap    → mounts <App />
+    -->
+
+    <!-- 4a. Bootstrap: expose React hooks globally so every module can use them -->
+    <script type="text/babel">
+        window.React = React;
+        window.ReactDOM = ReactDOM;
+        const { useState, useEffect, useRef, useMemo, useCallback } = React;
+    </script>
+
+    <!-- 4b. Core layer -->
+    <script type="text/babel" src="scripts/core/storage.js"></script>
+    <script type="text/babel" src="scripts/core/analyzer.js"></script>
+
+    <!-- 4c. Data layer -->
+    <script type="text/babel" src="scripts/data/three-template.js"></script>
+    <script type="text/babel" src="scripts/data/chip-library.js"></script>
+    <script type="text/babel" src="scripts/data/seed-tools.js"></script>
+
+    <!-- 4d. Services layer -->
+    <script type="text/babel" src="scripts/services/gemini.js"></script>
+    <script type="text/babel" src="scripts/services/tts.js"></script>
+    <script type="text/babel" src="scripts/services/imagen.js"></script>
+
+    <!-- 4e. Presentational primitives (no cross-component deps) -->
+    <script type="text/babel" src="scripts/components/Icon.jsx"></script>
+    <script type="text/babel" src="scripts/components/Toast.jsx"></script>
+    <script type="text/babel" src="scripts/components/ForgeToastStack.jsx"></script>
+    <script type="text/babel" src="scripts/components/RefactorBtn.jsx"></script>
+    <script type="text/babel" src="scripts/components/ToolCard.jsx"></script>
+    <script type="text/babel" src="scripts/components/AIForgeModal.jsx"></script>
+
+    <!-- 4f. Page-level components -->
+    <script type="text/babel" src="scripts/components/PreviewPage.jsx"></script>
+    <script type="text/babel" src="scripts/components/ModuleBuilder.jsx"></script>
+    <script type="text/babel" src="scripts/components/SettingsPage.jsx"></script>
+    <script type="text/babel" src="scripts/components/AgentSidebar.jsx"></script>
+    <script type="text/babel" src="scripts/components/IDEPage.jsx"></script>
+    <script type="text/babel" src="scripts/components/ForgePage.jsx"></script>
+
+    <!-- 4g. Root -->
+    <script type="text/babel" src="scripts/components/App.jsx"></script>
+
+    <!-- 4h. Mount -->
+    <script type="text/babel">
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
